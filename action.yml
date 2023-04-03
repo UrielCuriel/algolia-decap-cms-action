@@ -1,5 +1,5 @@
 name: 'Algolia Decap CMS'
-description: 'Automatic Algolia index updater with decap cms data',
+description: 'Automatic Algolia index updater with decap cms data'
 author: 'Uriel Curiel <iam@urielcuriel.dev>'
 inputs:
   collection_path:
