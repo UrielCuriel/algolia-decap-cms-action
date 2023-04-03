@@ -34,7 +34,8 @@ function getHeaderContent(path, basePath) {
  */
 function getFiles(path, basePath) {
   core.info("reading files");
-  core.info("path", resolve(basePath, path));
+  core.info(`path: ${path}`);
+  core.info(`basePath: ${basePath}`);
   const files = fs.readdirSync(resolve(basePath, path));
   return files;
 }
