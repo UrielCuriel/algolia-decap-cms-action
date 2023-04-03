@@ -3,6 +3,7 @@ const github = require("@actions/github");
 const algoliasearch = require("algoliasearch");
 const fs = require("fs");
 const { parse } = require("yaml");
+const { resolve } = require("path");
 
 /**
  * Read the md file and return the header (YAML front matter) content
@@ -14,7 +15,8 @@ const { parse } = require("yaml");
  * // { title: "My title", description: "My description" }
  */
 function getHeaderContent(path, basePath) {
-  const content = fs.readFileSync(`${basePath}/${path}`);
+  console.log("reading file", resolve(basePath, path));
+  const content = fs.readFileSync(resolve(basePath, path));
   const rawHeader = content.toString().split("---")[1];
   const header = parse(rawHeader);
   return { objectID: path, ...header };
@@ -30,7 +32,8 @@ function getHeaderContent(path, basePath) {
  * // [ "file1.md", "file2.md" ]
  */
 function getFiles(path, basePath) {
-  const files = fs.readdirSync(`${basePath}/${path}`);
+  console.log("reading files from", resolve(basePath, path));
+  const files = fs.readdirSync(resolve(basePath, path));
   return files;
 }
 const indexer = async () => {
