@@ -20785,6 +20785,7 @@ const github = __nccwpck_require__(3737);
 const algoliasearch = __nccwpck_require__(190);
 const fs = __nccwpck_require__(7147);
 const { parse } = __nccwpck_require__(2172);
+const { resolve } = __nccwpck_require__(1017);
 
 /**
  * Read the md file and return the header (YAML front matter) content
@@ -20796,7 +20797,9 @@ const { parse } = __nccwpck_require__(2172);
  * // { title: "My title", description: "My description" }
  */
 function getHeaderContent(path, basePath) {
-  const content = fs.readFileSync(`${basePath}/${path}`);
+  core.info("reading file content");
+  core.info("path", resolve(basePath, path));
+  const content = fs.readFileSync(resolve(basePath, path));
   const rawHeader = content.toString().split("---")[1];
   const header = parse(rawHeader);
   return { objectID: path, ...header };
@@ -20812,7 +20815,9 @@ function getHeaderContent(path, basePath) {
  * // [ "file1.md", "file2.md" ]
  */
 function getFiles(path, basePath) {
-  const files = fs.readdirSync(`${basePath}/${path}`);
+  core.info("reading files");
+  core.info("path", resolve(basePath, path));
+  const files = fs.readdirSync(resolve(basePath, path));
   return files;
 }
 const indexer = async () => {
