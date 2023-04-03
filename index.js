@@ -34,9 +34,8 @@ function getHeaderContent(path, basePath) {
  */
 function getFiles(path, basePath) {
   core.info("reading files");
-  core.info(`path: ${path}`);
-  core.info(`basePath: ${basePath}`);
   const files = fs.readdirSync(resolve(basePath, path));
+  core.info(`found ${files.length} files`);
   return files;
 }
 const indexer = async () => {
@@ -46,15 +45,12 @@ const indexer = async () => {
     const algoliaIndexName = core.getInput("algolia_index_name");
     const collection_path = core.getInput("collection_path");
     const basePath = process.env.GITHUB_WORKSPACE;
-
-    //inspect the base path content
-    core.info("base path content");
-    const baseContent = fs.readdirSync(basePath);
-    core.info(baseContent);
     const client = algoliasearch(algoliaAppId, algoliaAdminApiKey);
     const index = client.initIndex(algoliaIndexName);
     const files = getFiles(collection_path, basePath);
-    const records = files.map((file) => getHeaderContent(file, basePath));
+    const records = files.map((file) =>
+      getHeaderContent(file, resolve(basePath, collection_path))
+    );
     await index.saveObjects(records);
     core.setOutput("records", records);
   } catch (error) {
