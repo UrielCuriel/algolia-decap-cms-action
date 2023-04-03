@@ -1,0 +1,22 @@
+name: 'Algolia Decap CMS'
+description: 'Automatic Algolia index updater with decap cms data',
+author: 'Uriel Curiel <iam@urielcuriel.dev>'
+inputs:
+  collection_path:
+    description: 'The path to the decap collection path'
+    required: true
+  algolia_app_id:
+    description: 'The algolia app id'
+    required: true
+  algolia_index_name:
+    description: 'The algolia index name'
+    required: true
+  algolia_admin_api_key:
+    description: 'The algolia admin api key'
+    required: true
+outputs:
+  records:
+    description: 'The records that were indexed'
+runs:
+  using: 'node16'
+  main: 'index.js'
