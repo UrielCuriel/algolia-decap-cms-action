@@ -19,4 +19,4 @@ outputs:
     description: 'The records that were indexed'
 runs:
   using: 'node16'
-  main: 'index.js'
+  main: 'dist/index.js'
