@@ -45,6 +45,8 @@ const indexer = async () => {
     const algoliaAdminApiKey = core.getInput("algolia_admin_api_key");
     const algoliaIndexName = core.getInput("algolia_index_name");
     const collection_path = core.getInput("collection_path");
+    const payload = JSON.stringify(github.context.payload, undefined, 2);
+    core.info(`The event payload: ${payload}`);
     const basePath = process.env.GITHUB_WORKSPACE;
     const client = algoliasearch(algoliaAppId, algoliaAdminApiKey);
     const index = client.initIndex(algoliaIndexName);
