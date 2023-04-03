@@ -33,20 +33,23 @@ function getFiles(path, basePath) {
   const files = fs.readdirSync(`${basePath}/${path}`);
   return files;
 }
+const indexer = async () => {
+  try {
+    const algoliaAppId = core.getInput("algolia_app_id");
+    const algoliaAdminApiKey = core.getInput("algolia_admin_api_key");
+    const algoliaIndexName = core.getInput("algolia_index_name");
+    const collection_path = core.getInput("collection_path");
+    const basePath = process.env.GITHUB_WORKSPACE;
+    const client = algoliasearch(algoliaAppId, algoliaAdminApiKey);
+    const index = client.initIndex(algoliaIndexName);
 
-try {
-  const algoliaAppId = core.getInput("algolia_app_id");
-  const algoliaAdminApiKey = core.getInput("algolia_admin_api_key");
-  const algoliaIndexName = core.getInput("algolia_index_name");
-  const collection_path = core.getInput("collection_path");
-  const basePath = process.env.GITHUB_WORKSPACE;
-  const client = algoliasearch(algoliaAppId, algoliaAdminApiKey);
-  const index = client.initIndex(algoliaIndexName);
+    const files = getFiles(collection_path, basePath);
+    const records = files.map((file) => getHeaderContent(file, basePath));
+    await index.saveObjects(records);
+    core.setOutput("records", records);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+};
 
-  const files = getFiles(collection_path, basePath);
-  const records = files.map((file) => getHeaderContent(file, basePath));
-  await index.saveObjects(records);
-  core.setOutput("records", records);
-} catch (error) {
-  core.setFailed(error.message);
-}
+indexer();
