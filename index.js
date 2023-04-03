@@ -15,7 +15,8 @@ const { resolve } = require("path");
  * // { title: "My title", description: "My description" }
  */
 function getHeaderContent(path, basePath) {
-  console.log("reading file", resolve(basePath, path));
+  core.info("reading file content");
+  core.info("path", resolve(basePath, path));
   const content = fs.readFileSync(resolve(basePath, path));
   const rawHeader = content.toString().split("---")[1];
   const header = parse(rawHeader);
@@ -32,7 +33,8 @@ function getHeaderContent(path, basePath) {
  * // [ "file1.md", "file2.md" ]
  */
 function getFiles(path, basePath) {
-  console.log("reading files from", resolve(basePath, path));
+  core.info("reading files");
+  core.info("path", resolve(basePath, path));
   const files = fs.readdirSync(resolve(basePath, path));
   return files;
 }
