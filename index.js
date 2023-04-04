@@ -20,7 +20,7 @@ function getHeaderContent(path, basePath) {
   const content = fs.readFileSync(resolve(basePath, path));
   const rawHeader = content.toString().split("---")[1];
   const header = parse(rawHeader);
-  return { objectID: path, ...header };
+  return { objectID: path.split(".")[0], ...header };
 }
 
 /**
